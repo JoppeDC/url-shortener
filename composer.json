@@ -79,6 +79,9 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "codestyle": [
+            "PHP_CS_FIXER_IGNORE_ENV=1 symfony php vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php  --ansi < /dev/tty"
         ]
     },
     "conflict": {
@@ -98,6 +101,7 @@
         "symfony/maker-bundle": "^1.0",
         "symfony/phpunit-bridge": "^6.2",
         "symfony/stopwatch": "6.2.*",
-        "symfony/web-profiler-bundle": "6.2.*"
+        "symfony/web-profiler-bundle": "6.2.*",
+        "friendsofphp/php-cs-fixer": "^3.13"
     }
 }

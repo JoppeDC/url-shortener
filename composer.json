@@ -1,4 +1,6 @@
 {
+    "name": "joppedc/url-shortener",
+    "description": "Simple URL Shorten app",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "dev",

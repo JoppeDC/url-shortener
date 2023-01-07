@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[OA\Tag(name: 'Short URL')]
 final class CreateShortUrlController extends AbstractFOSRestController
@@ -40,8 +41,20 @@ final class CreateShortUrlController extends AbstractFOSRestController
     )]
     #[Route(path: '/create', name: 'api_create_short_url', methods: [Request::METHOD_POST])]
     #[ParamConverter('shortUrlRequest', class: CreateShortUrlRequest::class, converter: 'fos_rest.request_body')]
-    public function __invoke(CreateShortUrlRequest $shortUrlRequest, ShortUrlService $shortUrlService): Response
+    public function __invoke(CreateShortUrlRequest $shortUrlRequest, ShortUrlService $shortUrlService, ValidatorInterface $validator): Response
     {
+        $errors = $validator->validate($shortUrlRequest);
+
+        if (\count($errors) > 0) {
+            $errorString = '';
+
+            foreach ($errors as $error) {
+                $errorString .= $error->getMessage();
+            }
+
+            return $this->handleView($this->view(['error' => $errorString], 500));
+        }
+
         $shortenedUrl = $shortUrlService->shortenUrl($shortUrlRequest->getUrl());
         $shortUrlResponse = new CreateShortUrlResponse(
             $shortenedUrl->getTarget(),

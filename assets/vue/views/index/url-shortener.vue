@@ -2,6 +2,8 @@
   <div class="form-inline shorten-form" >
     <h1 class="h3 mb-3 font-weight-normal">Shorten URL</h1>
 
+    <p v-if="errors">{{errors}}</p>
+
     <div class="input-group">
       <input type="text" class="form-control" placeholder="URL" v-model="url"/>
       <button type="button" class="btn btn-primary" @click="shortenUrl">Shorten</button>
@@ -19,24 +21,38 @@ import {ref} from "vue";
 
 const url = ref('')
 const shortenedUrl = ref(null);
+const errors = ref(null);
 
 function shortenUrl() {
   fetchApi(url)
-      .then(x => shortenedUrl.value = x.shortUrl);
+      .then(function(response) {
+        if (!response.ok) {
+          console.log("nok");
+          return response.json().then(response => { throw new Error(response.error) })
+        }
+
+        return response.json();
+      })
+      .then(function(response) {
+        shortenedUrl.value = response.shortUrl;
+        errors.value = null;
+      })
+      .catch(function(response) {
+        errors.value = response;
+        shortenedUrl.value = null;
+      });
 }
 
 async function fetchApi(url) {
-  let response = await fetch('/api/create', {
+  return await fetch('/api/create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
     },
     body: JSON.stringify({
       'url': url.value
-  })
+    })
   });
-
-  return response.json();
 }
 </script>
 

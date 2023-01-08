@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table]
-final class ShortenedUrl
+class ShortenedUrl
 {
     #[ORM\Id]
     #[ORM\Column('id', 'bigint')]

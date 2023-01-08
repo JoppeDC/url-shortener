@@ -30,6 +30,8 @@ jobs:
           envkey_APP_ENV: prod
           envkey_APP_DEBUG: false
           envkey_APP_SECRET: ${{ secrets.APP_SECRET }}
+          envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          envkey_MESSENGER_TRANSPORT_DSN: ${{ secrets.MESSENGER_TRANSPORT_DSN }}
           file_name: .env
       # Copying files and artifacts via SSH
       - name: Copying files to server

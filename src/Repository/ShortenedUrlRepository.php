@@ -18,4 +18,10 @@ final class ShortenedUrlRepository extends ServiceEntityRepository
         $this->_em->persist($shortenedUrl);
         $this->_em->flush();
     }
+
+    public function delete(ShortenedUrl $shortenedUrl): void
+    {
+        $this->_em->remove($shortenedUrl);
+        $this->_em->flush();
+    }
 }

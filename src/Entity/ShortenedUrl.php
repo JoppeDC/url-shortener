@@ -19,6 +19,9 @@ class ShortenedUrl
     #[ORM\Column('target', 'string', nullable: false)]
     private string $target;
 
+    #[ORM\Column('is_admin', 'boolean')]
+    private bool $isAdmin = false;
+
     public function __construct(
         string $identifier,
         string $target
